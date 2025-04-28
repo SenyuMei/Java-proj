@@ -110,11 +110,28 @@ public final class MarcaEnEvento {
             return this.CALCULO_EVENTO_KO_MARCA_NEGATIVA;
         } else {
             if (this.evento == 0 || this.evento == 4) {
-                puntos = (int) (A*(B-marca));
-                puntos = (int) Math.pow(puntos, C);
+                if ( this.evento == 0 ) {
+                    puntos = (int) (PARAM[0][1]*(PARAM[0][2]-marca));
+                    puntos = (int) Math.pow(puntos, PARAM[0][3]);
+                } else {
+                    puntos = (int) (PARAM[4][1]*(PARAM[4][2]-marca));
+                    puntos = (int) Math.pow(puntos, PARAM[4][3]);
+                }
             } else {
-                puntos = (int) (A*(marca-B));
-                puntos = (int) Math.pow(puntos, C);
+                switch (this.evento) {
+                    case 1:
+                        puntos = (int) (PARAM[1][1]*(marca-PARAM[1][2]));
+                        puntos = (int) Math.pow(puntos, PARAM[1][3]);
+                        break;
+                    case 2:
+                        puntos = (int) (PARAM[2][1]*(marca-PARAM[2][2]));
+                        puntos = (int) Math.pow(puntos, PARAM[2][3]);
+                        break;
+                    case 3:
+                        puntos = (int) (PARAM[3][1]*(marca-PARAM[3][2]));
+                        puntos = (int) Math.pow(puntos, PARAM[3][3]);
+                        break;
+                }
             }        
         }
         return CALCULO_EVENTO_OK;
@@ -132,13 +149,13 @@ public final class MarcaEnEvento {
         switch (evento) {
             case 0:
             case 4:
-                String pista = "seg";
+                String pista = "segundos";
                 return pista;
             case 2:
                 String lanzamiento = "metros";
                 return lanzamiento;
             default:
-                String salto = "cm";
+                String salto = "centimetros";
                 return salto;
         }
                    
@@ -165,11 +182,8 @@ public final class MarcaEnEvento {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("100 metros lisos: ").append("marca = ").append(marca).append(MarcaEnEvento.getUnidadMarcaEnEvento(0)).append("\n");
-        sb.append("Salto de longitud: ").append("marca = ").append(marca).append(MarcaEnEvento.getUnidadMarcaEnEvento(1)).append("\n");
-        sb.append("Lanzamiento de peso: ").append("marca = ").append(marca).append(MarcaEnEvento.getUnidadMarcaEnEvento(2)).append("\n");
-        sb.append("Salto de altura: ").append("marca = ").append(marca).append(MarcaEnEvento.getUnidadMarcaEnEvento(3)).append("\n");
-        sb.append("400 metros: ").append("marca = ").append(marca).append(MarcaEnEvento.getUnidadMarcaEnEvento(4)).append("\n");
+        sb.append("(Cien Metros, marca=").append(marca).append("): Salto de altura:   ").append("marca=").append(MarcaEnEvento.getUnidadMarcaEnEvento(3)).append(", puntos=").append(this.puntos);
+  
         
         return sb.toString();
     }
