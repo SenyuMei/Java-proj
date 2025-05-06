@@ -6,7 +6,7 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  */
 public class Atleta {
 
-    private final int numInscripcio;
+    private final int numInscripcion;
     private final String nombre;
     private final String nacionalidad;
     private int puntos;
@@ -19,7 +19,7 @@ public class Atleta {
     public Atleta(String nombre, String nacionalidad, int numInscripcion) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
-        this.numInscripcio = numInscripcion;
+        this.numInscripcion = numInscripcion;
         this.marcas = new MarcaEnEvento[MarcaEnEvento.NUM_EVENTOS];
     }
 
@@ -29,7 +29,7 @@ public class Atleta {
      *
      */
     public int getNumInscripcion() {
-      return this.numInscripcio;
+      return this.numInscripcion;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Atleta {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Numero de inscripcion: ").append(this.numInscripcio).append("\n");
+        sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
         sb.append("Nombre: ").append(this.nombre).append("\n");
         sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
 
