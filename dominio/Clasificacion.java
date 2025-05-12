@@ -1,3 +1,5 @@
+ package edu.upc.etsetb.poo.decathlon1.dominio;
+
 import java.util.LinkedList;
 
 /**
@@ -8,7 +10,7 @@ import java.util.LinkedList;
 public class Clasificacion {
 
     private final int numAtletas;
-    private final LinkedList<Atleta> atletas = new LinkedList();
+    private LinkedList<Atleta> atletas = new LinkedList(); // revisar final || no
     /**
      * Método constructor de la clase. Se le pasa el número de atletas que
      * tendrá la clasificación y crea la lista , de momento vacia, de atletas.
@@ -18,6 +20,7 @@ public class Clasificacion {
      */
     public Clasificacion(int numAtletas) {
         this.numAtletas = numAtletas;
+        this.atletas = new LinkedList<>();
     }
     /**
      * Añade ordenadamente el atleta a a la clasificación (de acuerdo a los
@@ -33,13 +36,16 @@ public class Clasificacion {
     public void anyadirAClasificacion(Atleta a) {
         int recorrido = 0;
         
-        while ( recorrido < atletas.size() && atletas.get(recorrido).getPuntos() > a.getPuntos()) {
-            recorrido++;
-        }
-        atletas.add(recorrido, a);
-        
-        if(atletas.size() > numAtletas) {
-            atletas.removeLast();
+        if ( atletas.isEmpty() ) {
+            atletas.add(a);
+        } else {
+            while ( recorrido < atletas.size() && atletas.get(recorrido).getPuntos() > a.getPuntos()) {
+                recorrido++;
+            }
+            atletas.add(recorrido, a);
+            if(atletas.size() > numAtletas) {
+                atletas.removeLast();
+            }
         }
     }
 
