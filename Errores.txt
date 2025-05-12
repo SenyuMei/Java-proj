@@ -1,0 +1,32 @@
+Errores del programa parte 1 POO:
+
+Clase --> Atleta
+Hay un error de ejecuccion en el metodo toString Atleta que pese a que test este bien, en el metodo sale un error que pone ArrayOutOfBounds
+
+Clase --> Clasificacion 
+Hay un error de ejecuccion en el metood toString Classificacion que pese a que test este bien, en el metodo sale un error que pone ArrayOutOfBounds
+
+Clase --> MarcaEnEvento
+Test 02 - get puntos
+Test 03 - CalculaPuntosEvento
+Test 06 - toString
+Hay un error de ejecuccion en el metood toString MarcaEnEventoque pese a que test este bien, en el metodo sale un error que pone ArrayOutOfBounds
+
+Clase --> InterfazUsuario
+Esta clase esta mal posiblemente por culpa de controlador
+
+Clase --> Controlador
+Resumen de errores en Controlador
+		El atributo 'nombre' tiene un valor null. Debería tener el valor: {}; 
+El constructor no ha asignado al atributo 'numInscritos' el valor correcto. Debería ser '5'. En su lugar, tiene el valor '0'; expected:<5> but was:<0>
+El atributo 'atletas' es una referencia a null. No parece pues, que se haya invocado al método inicializaConAtletasYMarcasIniciales(); 
+No parece haberse creado ningún contenedor para el atributo 'atletas'; 
+El string con la información no contiene el número de inscritos en la competicion; 
+No parece haberse creado ningún contenedor para el atributo 'atletas'; 
+No parece haberse creado ningún contenedor para el atributo 'atletas'; 
+Al pasar el argumento 0, el método debería devolver 'ERROR: Número de atletas erróneo.'. En su lugar ha devuelto 'ERROR: 2'; expected:<ERROR: [Número de atletas erróneo.]> but was:<ERROR: [2]>
+Al pasar un argumento negativo, el método debería devolver 'ERROR: Número de atletas erróneo.'. En su lugar ha devuelto 'ERROR: 2'; expected:<ERROR: [Número de atletas erróneo.]> but was:<ERROR: [2]>
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.193 s -- in edu.upc.etsetb.poo.decathlon1.casosdeuso.ControladorTest
+
+
+
