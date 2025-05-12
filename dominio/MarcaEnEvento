@@ -78,9 +78,8 @@ public final class MarcaEnEvento {
      * metros (lanzamientos), o centímetros (saltos).
      */
     public MarcaEnEvento(int evento, double marca) {
-        // https://rollbar.com/blog/can-constructors-throw-exceptions-in-java/# //yes
-        if (marca < 0) {
-            throw new IllegalArgumentException("La marca no puede ser negativa");
+        if (evento < 0 || evento >= NUM_EVENTOS) {
+            throw new IllegalArgumentException("Evento no válido: " + evento);
         }
         this.evento = evento;
         this.marca = marca;
@@ -109,30 +108,32 @@ public final class MarcaEnEvento {
         if (this.marca < 0) {
             return this.CALCULO_EVENTO_KO_MARCA_NEGATIVA;
         } else {
-            if (this.evento == 0 || this.evento == 4) {
-                if ( this.evento == 0 ) {
-                    puntos = (int) (PARAM[0][1]*(PARAM[0][2]-marca));
-                    puntos = (int) Math.pow(puntos, PARAM[0][3]);
+            if (this.evento == CIEN_METROS || this.evento == CUATROCIENTOS_METROS) {
+                if (this.evento == CIEN_METROS) {
+                    // Fórmula para evento CIEN_METROS
+                    double base = PARAM[CIEN_METROS][A] * (PARAM[CIEN_METROS][B] - marca);
+                    puntos = (int) Math.pow(base, PARAM[CIEN_METROS][C]);
                 } else {
-                    puntos = (int) (PARAM[4][1]*(PARAM[4][2]-marca));
-                    puntos = (int) Math.pow(puntos, PARAM[4][3]);
+                    // Fórmula para evento CUATROCIENTOS_METROS
+                    double base = PARAM[CUATROCIENTOS_METROS][A] * (PARAM[CUATROCIENTOS_METROS][B] - marca);
+                    puntos = (int) Math.pow(base, PARAM[CUATROCIENTOS_METROS][C]);
                 }
             } else {
                 switch (this.evento) {
-                    case 1:
-                        puntos = (int) (PARAM[1][1]*(marca-PARAM[1][2]));
-                        puntos = (int) Math.pow(puntos, PARAM[1][3]);
+                    case SALTO_DE_LONGITUD:
+                        double baseLongitud = PARAM[SALTO_DE_LONGITUD][A] * (marca - PARAM[SALTO_DE_LONGITUD][B]);
+                        puntos = (int) Math.pow(baseLongitud, PARAM[SALTO_DE_LONGITUD][C]);
                         break;
-                    case 2:
-                        puntos = (int) (PARAM[2][1]*(marca-PARAM[2][2]));
-                        puntos = (int) Math.pow(puntos, PARAM[2][3]);
+                    case LAZAMIENTO_DE_PESO:
+                        double basePeso = PARAM[LAZAMIENTO_DE_PESO][A] * (marca - PARAM[LAZAMIENTO_DE_PESO][B]);
+                        puntos = (int) Math.pow(basePeso, PARAM[LAZAMIENTO_DE_PESO][C]);
                         break;
-                    case 3:
-                        puntos = (int) (PARAM[3][1]*(marca-PARAM[3][2]));
-                        puntos = (int) Math.pow(puntos, PARAM[3][3]);
+                    case SALTO_DE_ALTURA:
+                        double baseAltura = PARAM[SALTO_DE_ALTURA][A] * (marca - PARAM[SALTO_DE_ALTURA][B]);
+                        puntos = (int) Math.pow(baseAltura, PARAM[SALTO_DE_ALTURA][C]);
                         break;
                 }
-            }        
+            }
         }
         return CALCULO_EVENTO_OK;
     }
@@ -147,16 +148,16 @@ public final class MarcaEnEvento {
      */
     public static String getUnidadMarcaEnEvento(int evento) {
         switch (evento) {
-            case 0:
-            case 4:
-                String pista = "segundos";
-                return pista;
-            case 2:
-                String lanzamiento = "metros";
-                return lanzamiento;
+            case CIEN_METROS:
+            case CUATROCIENTOS_METROS:
+                return "segundos";
+            case LAZAMIENTO_DE_PESO:
+                return "metros";
+            case SALTO_DE_ALTURA:
+            case SALTO_DE_LONGITUD:
+                return "centimetros";
             default:
-                String salto = "centimetros";
-                return salto;
+                return null;
         }
                    
     }
@@ -182,9 +183,29 @@ public final class MarcaEnEvento {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("(Cien Metros, marca=").append(marca).append("): Salto de altura:   ").append("marca=").append(MarcaEnEvento.getUnidadMarcaEnEvento(3)).append(", puntos=").append(this.puntos);
-  
+        switch (this.evento) {
+            case CIEN_METROS:
+                sb.append("100 metros lisos: ");
+                break;
+            case SALTO_DE_LONGITUD:
+                sb.append("Salto de longitud: ");
+                break;
+            case LAZAMIENTO_DE_PESO:
+                sb.append("Lanzamiento de peso: ");
+                break;
+            case SALTO_DE_ALTURA:
+                sb.append("Salto de altura: ");
+                break;
+            case CUATROCIENTOS_METROS:
+                sb.append("400 metros lisos: ");
+                break;
+            default:
+                sb.append("Evento desconocido: ");
+                break;
+        }
+         sb.append("marca=").append(this.marca).append(" ").append(MarcaEnEvento.getUnidadMarcaEnEvento(3)).append(", puntos=").append(this.puntos);
         
+        // revisar to String
         return sb.toString();
     }
 }
