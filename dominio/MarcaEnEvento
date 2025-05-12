@@ -3,19 +3,31 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
 /**
  * Clase para gestionar la marca obtenida en un evento por un atleta.
  */
-public final class MarcaEnEvento {
- 
-        // Código para el evento 100 metros lisos(pista).
+public class MarcaEnEvento {
+
+    /**
+     * Código para el evento 100 metros lisos.
+     */
     public static final int CIEN_METROS = 0;
-        // Código para el evento salto de longitud(campo).
+    /**
+     * Código para el evento salto de longitud.
+     */
     public static final int SALTO_DE_LONGITUD = 1;
-        // Código para el evento lanzamiento de peso (campo).
+    /**
+     * Código para el evento lanzamiento de peso.
+     */
     public static final int LAZAMIENTO_DE_PESO = 2;
-        // Código para el evento salto de altura (campo).
+    /**
+     * Código para el evento salto de altura.
+     */
     public static final int SALTO_DE_ALTURA = 3;
-        // Código para el evento 400 metros lisos (pista).
+    /**
+     * Código para el evento 400 metros lisos.
+     */
     public static final int CUATROCIENTOS_METROS = 4;
-        // Número total de eventos (5).
+    /**
+     * Número total de eventos (5).
+     */
     public static final int NUM_EVENTOS = 5;
     /**
      * Código para señalar que el método calcularPuntosEvento() ha podido 
@@ -69,6 +81,7 @@ public final class MarcaEnEvento {
     private final int evento;
     private final double marca;
     private int puntos;
+
     /**
      * Método constructor de la clase
      *
@@ -79,12 +92,13 @@ public final class MarcaEnEvento {
      */
     public MarcaEnEvento(int evento, double marca) {
         if (evento < 0 || evento >= NUM_EVENTOS) {
-            throw new IllegalArgumentException("Evento no válido: " + evento);
+            throw new IllegalArgumentException("El evento debe estar entre 0 y " + (NUM_EVENTOS - 1));
         }
         this.evento = evento;
         this.marca = marca;
-        calcularPuntosEvento();
+        this.puntos = 0; // Inicialmente los puntos son 0, hasta que se calculen
     }
+
     /**
      * Método getter. Devuelve los puntos de MarcaEnEvento.
      *
@@ -93,6 +107,7 @@ public final class MarcaEnEvento {
     public int getPuntos() {
         return this.puntos;
     }
+
     /**
      * Cálcula los puntos correspondientes a la marca en este evento y los
      * asigna al atributo puntos. Los eventos de pista (carreras) y de los
@@ -104,39 +119,34 @@ public final class MarcaEnEvento {
      * @return Devuelve CALCULO_EVENTO_OK o CALCULO_EVENTO_KO_MARCA_NEGATIVA.
      */
     public int calcularPuntosEvento() {
-        
-        if (this.marca < 0) {
-            return this.CALCULO_EVENTO_KO_MARCA_NEGATIVA;
-        } else {
-            if (this.evento == CIEN_METROS || this.evento == CUATROCIENTOS_METROS) {
-                if (this.evento == CIEN_METROS) {
-                    // Fórmula para evento CIEN_METROS
-                    double base = PARAM[CIEN_METROS][A] * (PARAM[CIEN_METROS][B] - marca);
-                    puntos = (int) Math.pow(base, PARAM[CIEN_METROS][C]);
-                } else {
-                    // Fórmula para evento CUATROCIENTOS_METROS
-                    double base = PARAM[CUATROCIENTOS_METROS][A] * (PARAM[CUATROCIENTOS_METROS][B] - marca);
-                    puntos = (int) Math.pow(base, PARAM[CUATROCIENTOS_METROS][C]);
-                }
-            } else {
-                switch (this.evento) {
-                    case SALTO_DE_LONGITUD:
-                        double baseLongitud = PARAM[SALTO_DE_LONGITUD][A] * (marca - PARAM[SALTO_DE_LONGITUD][B]);
-                        puntos = (int) Math.pow(baseLongitud, PARAM[SALTO_DE_LONGITUD][C]);
-                        break;
-                    case LAZAMIENTO_DE_PESO:
-                        double basePeso = PARAM[LAZAMIENTO_DE_PESO][A] * (marca - PARAM[LAZAMIENTO_DE_PESO][B]);
-                        puntos = (int) Math.pow(basePeso, PARAM[LAZAMIENTO_DE_PESO][C]);
-                        break;
-                    case SALTO_DE_ALTURA:
-                        double baseAltura = PARAM[SALTO_DE_ALTURA][A] * (marca - PARAM[SALTO_DE_ALTURA][B]);
-                        puntos = (int) Math.pow(baseAltura, PARAM[SALTO_DE_ALTURA][C]);
-                        break;
-                }
-            }
+        if (marca < 0) {
+            return CALCULO_EVENTO_KO_MARCA_NEGATIVA;
         }
+        
+        double a = PARAM[evento][A];
+        double b = PARAM[evento][B];
+        double c = PARAM[evento][C];
+        
+        // Según las fórmulas de cálculo:
+        // - Eventos de pista (carreras): INT(A(B-P)^C)
+        // - Eventos de campo (saltos y lanzamientos): INT(A(P-B)^C)
+        
+        if (evento == CIEN_METROS || evento == CUATROCIENTOS_METROS) {
+            // Eventos de pista (carreras)
+            puntos = (int) Math.floor(a * Math.pow(b - marca, c));
+        } else {
+            // Eventos de campo (saltos y lanzamientos)
+            puntos = (int) Math.floor(a * Math.pow(marca - b, c));
+        }
+        
+        // Si da un resultado negativo, se pone a 0
+        if (puntos < 0) {
+            puntos = 0;
+        }
+        
         return CALCULO_EVENTO_OK;
     }
+
     /**
      * Devuelve un String con las únidades en las que se mide una marca de este
      * tipo de evento: segundos (para eventos de pista), metros (para
@@ -153,14 +163,14 @@ public final class MarcaEnEvento {
                 return "segundos";
             case LAZAMIENTO_DE_PESO:
                 return "metros";
-            case SALTO_DE_ALTURA:
             case SALTO_DE_LONGITUD:
+            case SALTO_DE_ALTURA:
                 return "centimetros";
             default:
-                return null;
+                throw new IllegalArgumentException("Evento no válido: " + evento);
         }
-                   
     }
+
     /**
      * Devuelve un String con la lista de eventos y sus números de evento
      * correspondiente.
@@ -168,10 +178,16 @@ public final class MarcaEnEvento {
      * @return Dicho String.
      */
     public static String getListaEventos() {
-        String listaEvento = "Lista de eventos: \n[0] 100 metros lisos\t[1] Salto de longitud \n[2] Lanzamiento de peso [3] Salto de altura [4] 400 metros lisos";
-        
-        return listaEvento;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Lista de eventos:\n");
+        sb.append("[0]    100 metros lisos\t");
+        sb.append("[1]    Salto de longitud\t");
+        sb.append("[2]    Lanzamiento de peso\t");
+        sb.append("[3]    Salto de altura\t");
+        sb.append("[4]    400 metros lisos");
+        return sb.toString();
     }
+
     /**
      * Método toString() de la clase.
      *
@@ -182,30 +198,34 @@ public final class MarcaEnEvento {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        
-        switch (this.evento) {
+        String nombreEvento;
+
+        switch (evento) {
             case CIEN_METROS:
-                sb.append("100 metros lisos: ");
+                nombreEvento = "100 metros lisos";
                 break;
             case SALTO_DE_LONGITUD:
-                sb.append("Salto de longitud: ");
+                nombreEvento = "Salto de longitud";
                 break;
             case LAZAMIENTO_DE_PESO:
-                sb.append("Lanzamiento de peso: ");
+                nombreEvento = "Lanzamiento de peso";
                 break;
             case SALTO_DE_ALTURA:
-                sb.append("Salto de altura: ");
+                nombreEvento = "Salto de altura";
                 break;
             case CUATROCIENTOS_METROS:
-                sb.append("400 metros lisos: ");
+                nombreEvento = "400 metros lisos";
                 break;
             default:
-                sb.append("Evento desconocido: ");
-                break;
+                nombreEvento = "Evento desconocido";
         }
-         sb.append("marca=").append(this.marca).append(" ").append(MarcaEnEvento.getUnidadMarcaEnEvento(3)).append(", puntos=").append(this.puntos);
-        
-        // revisar to String
+
+        sb.append(nombreEvento);
+        sb.append(":      marca=");
+        sb.append(marca);  // No se cambia nada, imprimirá con punto si el sistema lo hace así
+        sb.append(" ").append(getUnidadMarcaEnEvento(evento));
+        sb.append(", puntos=").append(puntos);
+
         return sb.toString();
     }
-}
+ }
