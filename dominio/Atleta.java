@@ -70,9 +70,11 @@ public class Atleta {
     //revisar
     public void anyadirMarcaEnEvento(int evento, double marca) {
         MarcaEnEvento nuevaMarca = new MarcaEnEvento(evento, marca);
+        nuevaMarca.calcularPuntosEvento(); // 
         marcas[evento] = nuevaMarca;
-        calcularPuntos(); // Recalcula puntos totales del atleta
+        calcularPuntos(); // recalcula puntos totales
     }
+
 
     /**
      * Recalcula los puntos totales obtendos por el atleta hasta el momento.
@@ -102,22 +104,24 @@ public class Atleta {
      * <br>
      * Puntos totales: 3993<br>
      * 
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
-        sb.append("Nombre: ").append(this.nombre).append("\n");
-        sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
+        */
+   @Override
+   public String toString() {
+       StringBuilder sb = new StringBuilder();
+       sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
+       sb.append("Nombre: ").append(this.nombre).append("\n");
+       sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
 
-        for (int i = 0; i < marcas.length; i++) {
-            if (marcas[i] != null) {
-                sb.append(MarcaEnEvento.getListaEventos().split("\n")[i]).append(" marca=").append(marcas[i].toString()).append("\n");
-            }
-        }
+       for (MarcaEnEvento marca : marcas) {
+           if (marca != null) {
+               sb.append(marca.toString()).append("\n");
+           }
+       }
 
-        sb.append("\nPuntos totales: ").append(this.puntos).append("\n");
+       sb.append("\nPuntos totales: ").append(this.puntos).append("\n");
 
-        return sb.toString();
-    }
+       return sb.toString();
+   }
+
 }
+
