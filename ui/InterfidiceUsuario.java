@@ -83,11 +83,7 @@ public class InterficieUsuario {
         String fecha = parte[1];
         String lugar = parte[2];
         
-        this.controlador = new Controlador(nombre, fecha, lugar, this, contrInitAtletasYMarcas);
-
-        if (contrInitAtletasYMarcas) {
-            controlador.inicializaConAtletasYMarcasIniciales();
-        }
+        this.controlador = new Controlador(nombre, fecha, lugar,this ,contrInitAtletasYMarcas);
     }
     /**
      * Inscribe un atleta con el nombre y la nacionalidad pasados en 
