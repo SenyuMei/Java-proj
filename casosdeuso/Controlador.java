@@ -93,13 +93,14 @@ public class Controlador {
     }
 
     public void inicializaConAtletasYMarcasIniciales() {
-        inscribirAtleta("Kevin Mayer", "FRA");
-        inscribirAtleta("Larbi Bourrada", "ALG");
-        inscribirAtleta("Dimitriy Karpov", "KAZ");
-        inscribirAtleta("Ashton Eaton", "USA");
-        inscribirAtleta("Ashley Moloney", "AUS");
-
-        int i = 0;
+        // Codigo para poblar atletas y marcas
+        // Se abre el periodo de inscripciones
+        inscribirAtleta("Kevin Mayer", "FRA");      // 800 pts por prueba
+        inscribirAtleta("Larbi Bourrada", "ALG");   // 1000 pts por prueba
+        inscribirAtleta("Dimitriy Karpov", "KAZ");   // 900 pts por prueba
+        inscribirAtleta("Ashton Eaton", "USA");     // 700 pts por prueba
+        inscribirAtleta("Ashley Moloney", "AUS");   // se lesionó y no compitió :-(
+        int i = 1;
         // 800 pts
         anyadirMarcaEnEventoDeUnAtleta(i, 0, 11.278);
         anyadirMarcaEnEventoDeUnAtleta(i, 1, 694);
@@ -127,12 +128,9 @@ public class Controlador {
         anyadirMarcaEnEventoDeUnAtleta(i, 2, 13.53);
         anyadirMarcaEnEventoDeUnAtleta(i, 3, 188);
         anyadirMarcaEnEventoDeUnAtleta(i, 4, 52.58);
-        i++;
-        // 600 pts (para el quinto atleta)
-        anyadirMarcaEnEventoDeUnAtleta(i, 0, 12.267);
-        anyadirMarcaEnEventoDeUnAtleta(i, 1, 607);
-        anyadirMarcaEnEventoDeUnAtleta(i, 2, 11.90);
-        anyadirMarcaEnEventoDeUnAtleta(i, 3, 176);
-        anyadirMarcaEnEventoDeUnAtleta(i, 4, 54.97);
+        // Ashley Moloney se lesionó y no competirá :-/
+
     }
+
+   
 }
