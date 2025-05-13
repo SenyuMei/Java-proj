@@ -25,7 +25,7 @@ public class Competicion {
         sb.append("Nombre de la competicion: ").append(this.nombre).append("\n");
         sb.append("Fecha de celebracion: ").append(this.fecha).append("\n");
         sb.append("Lugar: ").append(this.lugar).append("\n");
-        sb.append("Numero de atletas inscritos" ).append(this.numInscritos).append("\n");
+        sb.append("Numero de atletas inscritos: ").append(this.numInscritos).append("\n");
         return sb.toString();
     }
 
