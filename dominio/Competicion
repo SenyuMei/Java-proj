@@ -1,3 +1,8 @@
+package edu.upc.etsetb.poo.decathlon1.dominio;
+
+/**
+ * Clase para gestionar la competición.
+ */
 public class Competicion {
 
     private final String nombre;
@@ -16,7 +21,7 @@ public class Competicion {
     }
 
     public int obtenerSiguienteNumInscripcion() {
-      return this.numInscritos++;
+      return ++this.numInscritos;
     }
     
     @Override
