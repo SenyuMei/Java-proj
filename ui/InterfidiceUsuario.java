@@ -149,17 +149,16 @@ public class InterficieUsuario {
         int evento = Integer.parseInt(args[2]);
         double marca = Double.parseDouble(args[3]);
         
-        if ( controlador.getNumInscritosEnCompeticion() == 0 ) {
+        if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) == 0 ) {
             System.out.println(NO_ATLETAS_INSCRITOS_STR);
-        } else if ( numInscripcion == 0 || numInscripcion > controlador.getNumInscritosEnCompeticion() ) {
+        } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 ) {
             System.out.println(NUM_INSCRIPCION_ERRONEO_STR);         
-            } else if ( evento > 5 || evento < 0 ) {
+            } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 || controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) > 5) {
                 System.out.println(TIPO_DE_EVENTO_ERRONEO_STR);
             } else {
                 controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
             }
     }
-
     /**
      * A este argumento se le pasa la representación textual de un número 
      * entero  en la segunda posición de args (que es un array de Strings); 
