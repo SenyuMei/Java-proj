@@ -5,6 +5,8 @@ import edu.upc.etsetb.poo.decathlon1.dominio.Clasificacion;
 import edu.upc.etsetb.poo.decathlon1.dominio.Competicion;
 import edu.upc.etsetb.poo.decathlon1.dominio.MarcaEnEvento;
 import edu.upc.etsetb.poo.decathlon1.iu.InterficieUsuario;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,192 +14,92 @@ import java.util.Map;
  */
 public class Controlador {
 
-    /**
-     * Código entero indicativo de que todo ha ido bien
-     */
     public static final int RESULTADO_OK = 0;
-    /**
-     * Código de error indicativo de que no hay atletas inscritos
-     */
     public static final int NO_ATLETAS_INSCRITOS = 1;
-    /**
-     * Código de error indicativo de que el número de inscripción es erróneo
-     */
     public static final int NUM_INSCRIPCION_ERRONEO = 2;
-    /**
-     * Código de error indicativo de que el número indicativo del evento es
-     * erróneo
-     */
     public static final int TIPO_DE_EVENTO_ERRONEO = 3;
 
-    /**
-     * El contenedor de atletas: un mapa que mapea un atleta (valor) con su
-     * número de inscripción (clave)
-     */
     private final Map<Integer, Atleta> atletas;
-    /**
-     * La competición
-     */
     private final Competicion competicion;
-    /**
-     * La clasificación
-     */
     private Clasificacion clasificacion;
-    /**
-     * La interficie de usuario
-     */
-    private InterficieUsuario iu;
+    private final InterficieUsuario iu;
 
     /**
-     * Método constructor de la clase. Se le pasa la información correspondiente
-     * a la competición y la crea.Dependiendo del valor del argumento inicializa
-     * este método puede invocar Controlador::inicializaConAtletasYMarcas
-     * Iniciales() para inscribir atletas y añadir marcas y así no tener que
-     * hacerlo a mano cada vez que se ejecute el programa.
-     *
+     * Constructor de la clase Controlador.
+     * 
      * @param nombre Nombre de la competición.
      * @param fecha Fecha de la competición.
      * @param lugar Lugar donde se celebra.
-     * @param iu la interficie de usuario.
-     * @param inicializa indica si se quiere que el controlador invoque al
-     * método Controlador::inicializaConAtletasYMarcasIniciales() para inscribir
-     * atletas y añadir sus marcas, o no (en este último caso no se inscribirían
-     * atletas ni se añadiría ninguna marca)
+     * @param iu Interficie de usuario.
+     * @param inicializa Si es verdadero, inicializa con atletas y marcas.
      */
-    public Controlador(String nombre, String fecha,
-            String lugar, InterficieUsuario iu, boolean inicializa) {
-        
-        this.competicion = new Competicion(nombre,fecha,lugar);
+    public Controlador(String nombre, String fecha, String lugar, InterficieUsuario iu, boolean inicializa) {
+        this.competicion = new Competicion(nombre, fecha, lugar);
         this.iu = iu;
-        if(inicializa == true){
+        this.atletas = new HashMap<>();
+        if (inicializa) {
             inicializaConAtletasYMarcasIniciales();
         }
-        this.atletas = null;
     }
 
-    /**
-     * Se crea un atleta y se inscribe en la competición
-     *
-     * @param nombre Nobre del Atleta.
-     * @param nacionalidad Nacionalidad del Atleta.
-     */
     public void inscribirAtleta(String nombre, String nacionalidad) {
-        //this.atletas.put(nacionalidad);
+        int numInscripcion = this.competicion.obtenerSiguienteNumInscripcion();
+        Atleta atleta = new Atleta(nombre, nacionalidad, numInscripcion);
+        this.atletas.put(numInscripcion, atleta);
     }
 
-    /**
-     * Devuelve un String con los datos de la competición.
-     *
-     * @return Devuelve un String con los datos de la competición.
-     */
     public String getInfoCompeticion() {
         return this.competicion.toString();
     }
 
-    /**
-     * Devuelve el número de inscritos en la competición.
-     *
-     * @return Devuelve el número de inscritos en la competición.
-     */
     public int getNumInscritosEnCompeticion() {
         return this.competicion.getNumInscritos();
     }
 
-    /**
-     * Devuelve el String generado con el método Atleta::toString() con todos 
-     * los datos del atleta cuyo número de inscripción es pasado como argumento 
-     * si ese número de inscripción es correcto; si no lo es devuelve un 
-     * mensaje de error
-     *
-     * @param numInscripcion Número de inscripción del atleta.
-     * @return Si el número de inscripción es correcto, devuelve un String con 
-     * los datos del atleta con ese número de inscripción; en caso contrario 
-     * devuelve el String InterficieUsuario.NUM_INSCRIPCION_ERRONEO_STR
-     */
     public String getInfoAtleta(int numInscripcion) {
-        if(this.atletas.containsKey(numInscripcion)){
-            return this.atletas.toString();
-        }
-        else {
+        if (this.atletas.containsKey(numInscripcion)) {
+            return this.atletas.get(numInscripcion).toString();
+        } else {
             return InterficieUsuario.NUM_INSCRIPCION_ERRONEO_STR;
         }
     }
-
-    /**
-     * Añade un marca para determinado evento y atleta. Devuelve el valor 0
-     * (Controlador.RESULTADO_OK) si se ha podido añadir; devuelve valores
-     * distintos de cero (ver return debajo) si aún no hay ningún atleta
-     * inscrito, el número de inscripción del atleta es erróneo, o el número de
-     * tipo de evento es erróneo.
-     *
-     * @param numInscripcion Número de inscripción del atleta.
-     * @param evento Evento.
-     * @param marca Marca.
-     * @return Devuelve:<br>
-     * Controlador.RESULTADO_OK si se ha podido añadir la marca del evento al
-     * atleta; <br>
-     * Controlador.NO_ATLETAS_INSCRITOS si todavía no hay atletas inscritos;
-     * <br>
-     * Controlador.NUM_INSCRIPCION_ERRONEO si el número de inscripción es
-     * erróneo (recordad que el número de inscripción va de 1 a N siendo N el
-     * número de atletas inscritos); <br>
-     * Controlador.TIPO_DE_EVENTO_ERRONEO si el identificador del evento (un
-     * entero) no es correcto (recordad que los identificadores de evento van de
-     * 1 a MarcaEnEvento.NUM_EVENTOS);
-     */
     public int anyadirMarcaEnEventoDeUnAtleta(int numInscripcion, int evento, double marca) {
         
-        if ( atletas == null ) {
+        if (this.atletas.isEmpty()) {
             return NO_ATLETAS_INSCRITOS;
-        } else if ( this.atletas.containsKey(numInscripcion) ) {
+        } else if (numInscripcion <= 0) {
             return NUM_INSCRIPCION_ERRONEO;
-        } else if ( evento < 0 || evento > MarcaEnEvento.NUM_EVENTOS ) {
+        } else if (evento < 0 || evento >= MarcaEnEvento.NUM_EVENTOS) {
             return TIPO_DE_EVENTO_ERRONEO;
         } else {
+            Atleta atleta = this.atletas.get(numInscripcion);
+            atleta.anyadirMarcaEnEvento(evento, marca);
             return RESULTADO_OK;
         }
     }
-    /**
-     * Devuelve un String con la clasificación de los 'numAtletas' mejores
-     * atletas si todo es correcto, pero devuelve un mensaje notificando un
-     * error que comienza con "ERROR: " (ver return debajo) si: aún no hay
-     * ningún atleta inscrito, el número de atletas que se quiere que aparezca
-     * en la clasificación es erróneo (menor que 1 o mayor que el número de
-     * atletas compitiendo)
-     *
-     * @param numAtletas Número de los 'n' mejores atletas que queremos que
-     * aparecerán en la clasificación.
-     * @return Devuelve<br>
-     * Un String con la clasificación de los 'numAtletas' mejores atletas<br>
-     * El String InterficieUsuario.NO_ATLETAS_INSCRITOS_STR si no se ha inscrito
-     * ningún atleta<br>
-     * El String InterficieUsuario.NUM_ATLETAS_ERRONEO_STR si el número de inscripción
-     * pasado no es correcto
-     */
+
     public String getClasificacion(int numAtletas) {
-        Clasificacion c = new Clasificacion(numAtletas);
-        this.clasificacion = c;
-        if ( numAtletas < 1 || competicion.getNumInscritos() > numAtletas ) {
-            String a = ("ERROR: " + NUM_INSCRIPCION_ERRONEO);
-            return a;
-        } else if ( numAtletas == 0 ) {
-            String b = ("ERROR: " + NO_ATLETAS_INSCRITOS);
-            return b;
+        if (this.atletas.isEmpty()) {
+            return InterficieUsuario.NO_ATLETAS_INSCRITOS_STR;
+        } else if (numAtletas < 1 || numAtletas > this.competicion.getNumInscritos()) {
+            return InterficieUsuario.NUM_ATLETAS_ERRONEO_STR;
         } else {
-        return this.clasificacion.toString();
+            this.clasificacion = new Clasificacion(numAtletas);
+            for (Atleta atleta : this.atletas.values()) {
+                this.clasificacion.anyadirAClasificacion(atleta);
+            }
+            return this.clasificacion.toString();
         }
-    }  
-    
-    
+    }
+
     public void inicializaConAtletasYMarcasIniciales() {
-        // Codigo para poblar atletas y marcas
-        // Se abre el periodo de inscripciones
-        inscribirAtleta("Kevin Mayer", "FRA");      // 800 pts por prueba
-        inscribirAtleta("Larbi Bourrada", "ALG");   // 1000 pts por prueba
-        inscribirAtleta("Dimitriy Karpov", "KAZ");   // 900 pts por prueba
-        inscribirAtleta("Ashton Eaton", "USA");     // 700 pts por prueba
-        inscribirAtleta("Ashley Moloney", "AUS");   // se lesionó y no compitió :-(
-        int i = 1;
+        inscribirAtleta("Kevin Mayer", "FRA");
+        inscribirAtleta("Larbi Bourrada", "ALG");
+        inscribirAtleta("Dimitriy Karpov", "KAZ");
+        inscribirAtleta("Ashton Eaton", "USA");
+        inscribirAtleta("Ashley Moloney", "AUS");
+
+        int i = 0;
         // 800 pts
         anyadirMarcaEnEventoDeUnAtleta(i, 0, 11.278);
         anyadirMarcaEnEventoDeUnAtleta(i, 1, 694);
@@ -225,8 +127,12 @@ public class Controlador {
         anyadirMarcaEnEventoDeUnAtleta(i, 2, 13.53);
         anyadirMarcaEnEventoDeUnAtleta(i, 3, 188);
         anyadirMarcaEnEventoDeUnAtleta(i, 4, 52.58);
-        // Ashley Moloney se lesionó y no competirá :-/
-
+        i++;
+        // 600 pts (para el quinto atleta)
+        anyadirMarcaEnEventoDeUnAtleta(i, 0, 12.267);
+        anyadirMarcaEnEventoDeUnAtleta(i, 1, 607);
+        anyadirMarcaEnEventoDeUnAtleta(i, 2, 11.90);
+        anyadirMarcaEnEventoDeUnAtleta(i, 3, 176);
+        anyadirMarcaEnEventoDeUnAtleta(i, 4, 54.97);
     }
-
 }
