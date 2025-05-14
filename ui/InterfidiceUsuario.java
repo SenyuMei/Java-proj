@@ -155,6 +155,7 @@ public class InterficieUsuario {
                 controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
             }
     }
+
     /**
      * A este argumento se le pasa la representación textual de un número 
      * entero  en la segunda posición de args (que es un array de Strings); 
@@ -170,10 +171,11 @@ public class InterficieUsuario {
      */
     public void mostrarClasificacion(String[] args) {
         int num = Integer.parseInt(args[1]);
-        
-        if ( controlador.getNumInscritosEnCompeticion() == 0 ) {
+        int numTotalAtletas = controlador.getNumInscritosEnCompeticion();
+                
+        if ( controlador.getClasificacion(numTotalAtletas) == "1") {
             System.out.println(NO_ATLETAS_INSCRITOS_STR);
-        } else if ( num < 1 || num > controlador.getNumInscritosEnCompeticion() ) {
+        } else if ( controlador.getClasificacion(num) == "2" ) {
             System.out.println(NUM_ATLETAS_ERRONEO_STR);
         } else {
             for (int i = 0 ; i < num ; i++) {
@@ -205,37 +207,33 @@ public class InterficieUsuario {
      */
     public void ejecutaComando(String comando) {
         String[] args = comando.split(SEPARADOR);
-
-        switch (args[0]) {
-            case "ay":
+        
+        if (!args[0].equals("ay") && !args[0].equals("ia") && !args[0].equals("mc") && !args[0].equals("am") && !args[0].equals("cl")) {
+            System.out.println(CMD_ERRONEO_STR);
+        } else {
+            if(args[0].equals("ay")) {
                 mostrarOpciones();
-                break;
-            case "ia":
+            } else if (args[0].equals("ia")) {
                 if (args.length == 3) {
-                    inscribirAtleta(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "mc":
+                        inscribirAtleta(args);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            } else if (args[0].equals("mc")) {
                 mostrarCompeticion();
-                break;
-            case "am":
+            } else if (args[0].equals("am")) {
                 if (args.length == 4) {
-                    anyadirMarcaEnEventoDeUnAtleta(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "cl":
+                        anyadirMarcaEnEventoDeUnAtleta(args);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            } else if (args[0].equals("cl")) {
                 if (args.length == 2) {
-                    mostrarClasificacion(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            default:
-                System.out.println(CMD_ERRONEO_STR);
+                        mostrarClasificacion(args);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            }
         }
     }
 
