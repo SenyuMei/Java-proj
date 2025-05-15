@@ -208,19 +208,25 @@ public class InterficieUsuario {
     public void ejecutaComando(String comando) {
         String[] args = comando.split(SEPARADOR);
         
-        if (!args[0].equals("ay") && !args[0].equals("ia") && !args[0].equals("mc") && !args[0].equals("am") && !args[0].equals("cl")) {
+        if (!args[0].equals("ay") && !args[0].equals("ia") && !args[0].equals("mc") && !args[0].equals("ma") && !args[0].equals("am") && !args[0].equals("cl")) {
             System.out.println(CMD_ERRONEO_STR);
         } else {
             if(args[0].equals("ay")) {
                 mostrarOpciones();
             } else if (args[0].equals("ia")) {
                 if (args.length == 3) {
-                        inscribirAtleta(args);
+                        controlador.inscribirAtleta(args[1], args[2]);
                     } else {
                         System.out.println(CMD_ERRONEO_STR);
                     }
             } else if (args[0].equals("mc")) {
-                mostrarCompeticion();
+                    controlador.getInfoCompeticion();
+            } else if (args[0].equals("ma")) {
+                    if (args.length == 2) {
+                        controlador.getInfoAtleta(Integer.parseInt(args[1]));
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
             } else if (args[0].equals("am")) {
                 if (args.length == 4) {
                         anyadirMarcaEnEventoDeUnAtleta(args);
