@@ -145,19 +145,15 @@ public class InterficieUsuario {
         int evento = Integer.parseInt(args[2]);
         double marca = Double.parseDouble(args[3]);
         
-        int resultado = controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
-        
-        if (resultado == Controlador.NO_ATLETAS_INSCRITOS) {
+        if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) == 0 ) {
             System.out.println(NO_ATLETAS_INSCRITOS_STR);
-        } else if (resultado == Controlador.NUM_INSCRIPCION_ERRONEO) {
+        } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 ) {
             System.out.println(NUM_INSCRIPCION_ERRONEO_STR);         
-        } else if (resultado == Controlador.TIPO_DE_EVENTO_ERRONEO) {
-            System.out.println(TIPO_DE_EVENTO_ERRONEO_STR);
-        } else if (resultado == Controlador.RESULTADO_OK) {
-            System.out.println(MARCA_ANYADIDA_STR);
-        } else {
-            System.out.println(CODIGO_ILEGAL_STR);
-        }
+            } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 || controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) > 5) {
+                System.out.println(TIPO_DE_EVENTO_ERRONEO_STR);
+            } else {
+                controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
+            }
     }
 
     /**
@@ -174,14 +170,18 @@ public class InterficieUsuario {
      * @param args Los argumentos del comando.
      */
     public void mostrarClasificacion(String[] args) {
-        int num = Integer.parseInt(args[1]);
+        // int num = Integer.parseInt(args[1]);
+        int numTotalAtletas = controlador.getNumInscritosEnCompeticion();
+        String numAtletas = controlador.getClasificacion(Integer.parseInt(args[1]));
         
-        String resultado = controlador.getClasificacion(num);
-        
-        if (resultado.equals(NO_ATLETAS_INSCRITOS_STR) || resultado.equals(NUM_ATLETAS_ERRONEO_STR)) {
-            System.out.println(resultado);
+        if ( numTotalAtletas == 0 ) {
+            System.out.println(NO_ATLETAS_INSCRITOS_STR);
+        } else if ( numTotalAtletas < 0 ) {
+            System.out.println(NUM_ATLETAS_ERRONEO_STR);
         } else {
-            System.out.println(resultado);
+            for (int i = 0 ; i < numTotalAtletas ; i++) {
+                controlador.getClasificacion(i);
+            }
         }
     }
 
@@ -191,8 +191,7 @@ public class InterficieUsuario {
     public void mostrarOpciones() {
         String s = "Opciones: \nay \tAyuda \n"
                 + "ia:nombre:nacionalidad \tInscribir atleta \n"
-                + "mc \tMostrar datos de la competición\n"
-                + "ma:num_atleta \tMostrar datos de un atleta\n"
+                + "mc \tMostrar datos de la competición"
                 + "am:num_atleta:num_evento:marca \tAñadir marca de un evento a un atleta \n"
                 + "cl:num_atletas \tMostrar clasificación \n"
                 + "fi \tFin";
@@ -210,48 +209,38 @@ public class InterficieUsuario {
     public void ejecutaComando(String comando) {
         String[] args = comando.split(SEPARADOR);
         
-        switch (args[0]) {
-            case "ay":
+        if (!args[0].equals("ay") && !args[0].equals("ia") && !args[0].equals("mc") && !args[0].equals("ma") && !args[0].equals("am") && !args[0].equals("cl")) {
+            System.out.println(CMD_ERRONEO_STR);
+        } else {
+            if(args[0].equals("ay")) {
                 mostrarOpciones();
-                break;
-            case "ia":
+            } else if (args[0].equals("ia")) {
                 if (args.length == 3) {
-                    inscribirAtleta(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "mc":
-                if (args.length == 1) {
-                    System.out.println(controlador.getInfoCompeticion());
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "ma":
-                if (args.length == 2) {
-                    mostrarAtleta(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "am":
+                        controlador.inscribirAtleta(args[1], args[2]);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            } else if (args[0].equals("mc")) {
+                    controlador.getInfoCompeticion();
+            } else if (args[0].equals("ma")) {
+                    if (args.length == 2) {
+                        controlador.getInfoAtleta(Integer.parseInt(args[1]));
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            } else if (args[0].equals("am")) {
                 if (args.length == 4) {
-                    anyadirMarcaEnEventoDeUnAtleta(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            case "cl":
+                        anyadirMarcaEnEventoDeUnAtleta(args);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            } else if (args[0].equals("cl")) {
                 if (args.length == 2) {
-                    mostrarClasificacion(args);
-                } else {
-                    System.out.println(CMD_ERRONEO_STR);
-                }
-                break;
-            default:
-                System.out.println(CMD_ERRONEO_STR);
-                break;
+                        mostrarClasificacion(args);
+                    } else {
+                        System.out.println(CMD_ERRONEO_STR);
+                    }
+            }
         }
     }
 
