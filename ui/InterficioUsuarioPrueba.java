@@ -139,21 +139,28 @@ public class InterficieUsuario {
      * del identificador de un evento y de una marca, en la segunda, 
      * tercera y cuarta posición del array args, respectivamente.
      */
-    public void anyadirMarcaEnEventoDeUnAtleta(String[] args) {
-        
-        int numInscripcion = Integer.parseInt(args[1]);
-        int evento = Integer.parseInt(args[2]);
-        double marca = Double.parseDouble(args[3]);
-        
-        if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) == 0 ) {
-            System.out.println(NO_ATLETAS_INSCRITOS_STR);
-        } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 ) {
-            System.out.println(NUM_INSCRIPCION_ERRONEO_STR);         
-            } else if ( controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) <= 0 || controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca) > 5) {
-                System.out.println(TIPO_DE_EVENTO_ERRONEO_STR);
-            } else {
-                controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
-            }
+   public void anyadirMarcaEnEventoDeUnAtleta(String[] args) {
+    int numInscripcion = Integer.parseInt(args[1]);
+    int evento = Integer.parseInt(args[2]);
+    double marca = Double.parseDouble(args[3]);
+    int res = controlador.anyadirMarcaEnEventoDeUnAtleta(numInscripcion, evento, marca);
+
+        switch (res) {
+            case 0:
+                this.console.println(MARCA_ANYADIDA_STR);
+                break;
+            case 1:
+                this.console.println(NO_ATLETAS_INSCRITOS_STR);
+                break;
+            case 2:
+                this.console.println(NUM_INSCRIPCION_ERRONEO_STR);
+                break;
+            case 3:
+                this.console.println(TIPO_DE_EVENTO_ERRONEO_STR);
+                break;
+            default:
+                this.console.println(InterficieUsuario.CODIGO_ILEGAL_STR);
+        }
     }
 
     /**
@@ -169,20 +176,28 @@ public class InterficieUsuario {
      *
      * @param args Los argumentos del comando.
      */
-    public void mostrarClasificacion(String[] args) {
+  public void mostrarClasificacion(String[] args) {
         // int num = Integer.parseInt(args[1]);
-        int numTotalAtletas = controlador.getNumInscritosEnCompeticion();
-        String numAtletas = controlador.getClasificacion(Integer.parseInt(args[1]));
+        int numDeAtletas = Integer.parseInt(args[1]);
+        String clasificacion = controlador.getClasificacion(numDeAtletas);
         
-        if ( numTotalAtletas == 0 ) {
-            System.out.println(NO_ATLETAS_INSCRITOS_STR);
-        } else if ( numTotalAtletas < 0 ) {
-            System.out.println(NUM_ATLETAS_ERRONEO_STR);
-        } else {
-            for (int i = 0 ; i < numTotalAtletas ; i++) {
-                controlador.getClasificacion(i);
-            }
+        if ( this.controlador == null ) {
+            this.console.println("Error: Controlador no preparado");
+            return;
         }
+        if (clasificacion == null) {
+            this.console.println("ERROR: Clasificacion vacia");   
+            return;
+        } 
+        if ( clasificacion.equals("1") ) {
+            this.console.println(NO_ATLETAS_INSCRITOS_STR);
+            return;
+        }
+        if ( clasificacion.equals("2") ) {
+            this.console.println(NUM_ATLETAS_ERRONEO_STR);
+            return;
+        }
+        this.console.println(clasificacion);
     }
 
     /**
@@ -210,36 +225,45 @@ public class InterficieUsuario {
         String[] args = comando.split(SEPARADOR);
         
         if (!args[0].equals("ay") && !args[0].equals("ia") && !args[0].equals("mc") && !args[0].equals("ma") && !args[0].equals("am") && !args[0].equals("cl")) {
-            System.out.println(CMD_ERRONEO_STR);
+            this.console.println(CMD_ERRONEO_STR);
         } else {
-            if(args[0].equals("ay")) {
-                mostrarOpciones();
-            } else if (args[0].equals("ia")) {
-                if (args.length == 3) {
+            switch (args[0]) {
+                case "ay":
+                    mostrarOpciones();
+                    break;
+                case "ia":
+                    if (args.length == 3) {
                         controlador.inscribirAtleta(args[1], args[2]);
                     } else {
-                        System.out.println(CMD_ERRONEO_STR);
+                        this.console.println(CMD_ERRONEO_STR);
                     }
-            } else if (args[0].equals("mc")) {
+                    break;
+                case "mc":
                     controlador.getInfoCompeticion();
-            } else if (args[0].equals("ma")) {
+                    break;
+                case "ma":
                     if (args.length == 2) {
                         controlador.getInfoAtleta(Integer.parseInt(args[1]));
                     } else {
-                        System.out.println(CMD_ERRONEO_STR);
+                        this.console.println(CMD_ERRONEO_STR);
                     }
-            } else if (args[0].equals("am")) {
-                if (args.length == 4) {
+                    break;
+                case "am":
+                    if (args.length == 4) {
                         anyadirMarcaEnEventoDeUnAtleta(args);
                     } else {
-                        System.out.println(CMD_ERRONEO_STR);
+                        this.console.println(CMD_ERRONEO_STR);
                     }
-            } else if (args[0].equals("cl")) {
-                if (args.length == 2) {
+                    break;
+                case "cl":
+                    if (args.length == 2) {
                         mostrarClasificacion(args);
                     } else {
-                        System.out.println(CMD_ERRONEO_STR);
+                        this.console.println(CMD_ERRONEO_STR);
                     }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -257,7 +281,7 @@ public class InterficieUsuario {
             System.out.print("Entra un comando: ");
             comando = lector.nextLine();
                 if (comando.equals("fi")) {
-                    System.out.println("Fin del programa. ¡Hasta la próxima usuario!");
+                    this.console.println("Fin del programa. ¡Hasta la próxima usuario!");
                 break;
                 }
         ejecutaComando(comando);
