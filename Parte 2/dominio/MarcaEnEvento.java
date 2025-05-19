@@ -33,12 +33,12 @@ public abstract class MarcaEnEvento {
      * Código para señalar que el método calcularPuntosEvento() ha podido 
      * realizar los cálculos encomendados sin problemas.
      */
-    public static final int CALCULO_EVENTO_OK = 0;
+    /* public static final int CALCULO_EVENTO_OK = 0;*/
     /**
      * Código para señalar que se ha intentado calcular puntos para una 
      * marca negativa, que es una situación que no debe darse.
      */
-    public static final int CALCULO_EVENTO_KO_MARCA_NEGATIVA = -1;
+    /*public static final int CALCULO_EVENTO_KO_MARCA_NEGATIVA = -1;*/
     
     protected double marca;
     
@@ -103,10 +103,12 @@ public abstract class MarcaEnEvento {
      *
      * @return Devuelve CALCULO_EVENTO_OK o CALCULO_EVENTO_KO_MARCA_NEGATIVA.
      */
-    public abstract void calcularPuntosEvento(double A, double B, double C, double marca) {
-        /*if (marca < 0) {
+    public abstract void calcularPuntosEvento(double A, double B, double C, double marca);
+    
+    /*public int calcularPuntosEvento() {
+        if (marca < 0) {
             return CALCULO_EVENTO_KO_MARCA_NEGATIVA;
-        }*/
+        }
         
         double a = PARAM[evento][A];
         double b = PARAM[evento][B];
@@ -128,10 +130,8 @@ public abstract class MarcaEnEvento {
         if (puntos < 0) {
             puntos = 0;
         }
-        
-        return CALCULO_EVENTO_OK;
-    }
-
+º   */
+            
     /**
      * Devuelve un String con las únidades en las que se mide una marca de este
      * tipo de evento: segundos (para eventos de pista), metros (para
@@ -141,7 +141,7 @@ public abstract class MarcaEnEvento {
      * @return El String con el tipo de únidades ("segundos", "metros" o
      * "centímetros".
      */
-    public static String getUnidadMarcaEnEvento(int evento) {
+    /*public static String getUnidadMarcaEnEvento(int evento) {
         switch (evento) {
             case CIEN_METROS:
             case CUATROCIENTOS_METROS:
@@ -154,7 +154,7 @@ public abstract class MarcaEnEvento {
             default:
                 throw new IllegalArgumentException("Evento no válido: " + evento);
         }
-    }
+    }*/
 
     /**
      * Devuelve un String con la lista de eventos y sus números de evento
@@ -180,6 +180,8 @@ public abstract class MarcaEnEvento {
      * muestra un ejemplo:<br>
      * 100 metros lisos:     marca=11.278 segundos, puntos=800
      */
+    
+    /*
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -212,5 +214,5 @@ public abstract class MarcaEnEvento {
         sb.append(", puntos=").append(puntos);
 
         return sb.toString();
-    }
+    }*/
  }
