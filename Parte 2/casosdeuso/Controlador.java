@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * El controlador del programa.
  */
-public class Controlador {
+public final class Controlador {
 
     /**
      * Código entero indicativo de que todo ha ido bien
@@ -70,6 +70,10 @@ public class Controlador {
      * método Controlador::inicializaConAtletasYMarcasIniciales() para inscribir
      * atletas y añadir sus marcas, o no (en este último caso no se inscribirían
      * atletas ni se añadiría ninguna marca)
+     * @throws edu.upc.etsetb.poo.decathlon1.dominio.NoAtletasInscritosException
+     * @throws edu.upc.etsetb.poo.decathlon1.dominio.NumInscripcionException
+     * @throws edu.upc.etsetb.poo.decathlon1.dominio.TipoEventoException
+     * @throws edu.upc.etsetb.poo.decathlon1.dominio.MarcaNegativaException
      */
     public Controlador(String nombre, String fecha,
                        String lugar, InterficieUsuario iu, boolean inicializa) throws NoAtletasInscritosException, NumInscripcionException, TipoEventoException, MarcaNegativaException {
@@ -83,13 +87,30 @@ public class Controlador {
     }
 
     public void inscribirAtleta(String nombre, String nacionalidad) {
-        int numInscripcion = competicion.obtenerSiguienteNumInscripcion();
-        Atleta atleta = new Atleta(nombre, nacionalidad, numInscripcion);
-        atletas.put(numInscripcion, atleta);
+        try {
+            int numInscripcion = competicion.obtenerSiguienteNumInscripcion();
+            if (numInscripcion == 0) {
+                throw new NoAtletasInscritosException("No hay atletas inscritos.");
+            }
+            Atleta atleta = new Atleta(nombre, nacionalidad, numInscripcion);
+            atletas.put(numInscripcion, atleta);
+
+        } catch (NoAtletasInscritosException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+
     public String getInfoCompeticion() {
-        return competicion.toString();
+        try {
+            if (!atletas.isEmpty()) {
+                return competicion.toString();
+            } 
+        
+        } catch (NoAtletasInscritosException e) {
+            return e.getMessage();
+        }
+        return null;
     }
 
     public int getNumInscritosEnCompeticion() {
@@ -97,38 +118,52 @@ public class Controlador {
     }
 
     public String getInfoAtleta(int numInscripcion) {
+        try {
+            if (numInscripcion < 0) {
+                throw new NumInscripcionException("Número de inscripción inválido: no puede ser negativo.");
+            }
+            if (numInscripcion == atletas.size()) {
+                throw new NumInscripcionException("Número de inscripción inválido: fuera de rango.");
+            }
         Atleta atleta = atletas.get(numInscripcion);
-        if (atleta == null) {
-            return InterficieUsuario.NUM_INSCRIPCION_ERRONEO_STR;
+            return atleta.toString();
+        } catch (NumInscripcionException e) {
+            return e.getMessage();
         }
-        return atleta.toString();
     }
 
-    public void anyadirMarcaEnEEventoDeUnAtleta (int numInscripcion, int evento, double marca) throws NoAtletasInscritosException, NumInscripcionException, TipoEventoException, MarcaNegativaException {
+    public void anyadirMarcaEnEventoDeUnAtleta (int numInscripcion, int evento, double marca) throws NoAtletasInscritosException, NumInscripcionException, TipoEventoException, MarcaNegativaException {
         if (atletas.isEmpty()) {
-            //return NO_ATLETAS_INSCRITOS;
+            throw new NoAtletasInscritosException("ERROR: Aún no hay ningún atleta inscrito.");
         }
 
         Atleta atleta = atletas.get(numInscripcion);
         if (atleta == null) {
-            //return NUM_INSCRIPCION_ERRONEO;
+            throw new NumInscripcionException("ERROR: El número de inscripción es erróneo.");
         }
 
         if (evento < 0 || evento >= MarcaEnEvento.NUM_EVENTOS) {
-            //return TIPO_DE_EVENTO_ERRONEO;
+            throw new TipoEventoException("ERROR: Evento Incorreto!");
+        }
+        if ( marca < 0) {
+            throw new MarcaNegativaException("ERROR: La marca es negativa");
         }
 
         atleta.anyadirMarcaEnEvento(evento, marca);
-        //return RESULTADO_OK;
+        System.out.println("Marca añadida!");
     }
 
     public String getClasificacion(int numAtletas) throws NoAtletasInscritosException, NumeroDeAtletasException{
         if (atletas.isEmpty()) {
-            return InterficieUsuario.NO_ATLETAS_INSCRITOS_STR;
+            throw new NoAtletasInscritosException("No hay atletas inscritos.");
         }
 
         if (numAtletas < 1 || numAtletas > atletas.size()) {
-            return InterficieUsuario.NUM_ATLETAS_ERRONEO_STR;
+            throw new NumeroDeAtletasException("ERROR: Número de atletas erróneo.");
+        }
+        
+        if (numAtletas == atletas.size()) {
+            throw new NoAtletasInscritosException("No hay atletas inscritos.");
         }
 
         clasificacion = new Clasificacion(numAtletas);
@@ -157,7 +192,7 @@ public class Controlador {
      * anyadirMarcaEnEventoDeUnAtleta(i, 4, 50.32);<br>
      *
      */
-    public void inicializaConAtletasYMarcasIniciales() throws NoAtletasInscritosException {
+    public void inicializaConAtletasYMarcasIniciales() throws NoAtletasInscritosException, NumInscripcionException, TipoEventoException, MarcaNegativaException {
      if (atletas.isEmpty()) {
          throw new NoAtletasInscritosException("No hay atletas inscritos.");
      }
