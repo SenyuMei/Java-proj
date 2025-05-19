@@ -9,6 +9,9 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  * @author dario
  */
 public class TipoEventoException extends Exception {
+    public TipoEventoException() {
+        super("ERROR: Número de tipo de evento erróneo.");
+    }
     public TipoEventoException(String msg) {
         super(msg);
     }
