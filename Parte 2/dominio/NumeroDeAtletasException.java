@@ -9,6 +9,9 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  * @author dario
  */
 public class NumeroDeAtletasException extends Exception {
+    public NumeroDeAtletasException() {
+        super("ERROR: Número de atletas erróneo.");
+    }
     public NumeroDeAtletasException(String msg) {
         super(msg);
     }
