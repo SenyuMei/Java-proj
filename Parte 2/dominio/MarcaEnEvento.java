@@ -114,19 +114,15 @@ public abstract class MarcaEnEvento {
         double b = PARAM[evento][B];
         double c = PARAM[evento][C];
         
-        // Según las fórmulas de cálculo:
         // - Eventos de pista (carreras): INT(A(B-P)^C)
         // - Eventos de campo (saltos y lanzamientos): INT(A(P-B)^C)
         
         if (evento == CIEN_METROS || evento == CUATROCIENTOS_METROS) {
-            // Eventos de pista (carreras)
             puntos = (int) Math.floor(a * Math.pow(b - marca, c));
         } else {
-            // Eventos de campo (saltos y lanzamientos)
             puntos = (int) Math.floor(a * Math.pow(marca - b, c));
         }
         
-        // Si da un resultado negativo, se pone a 0
         if (puntos < 0) {
             puntos = 0;
         }
@@ -152,7 +148,7 @@ public abstract class MarcaEnEvento {
             case SALTO_DE_ALTURA:
                 return "centimetros";
             default:
-                throw new IllegalArgumentException("Evento no válido: " + evento);
+                System.out.println("Evento incorrecto!");
         }
     }*/
 
@@ -209,7 +205,7 @@ public abstract class MarcaEnEvento {
 
         sb.append(nombreEvento);
         sb.append(":      marca=");
-        sb.append(marca);  // No se cambia nada, imprimirá con punto si el sistema lo hace así
+        sb.append(marca);
         sb.append(" ").append(getUnidadMarcaEnEvento(evento));
         sb.append(", puntos=").append(puntos);
 
