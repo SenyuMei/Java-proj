@@ -8,19 +8,19 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  *
  * @author dario
  */
-public class MarcaEnEventoSaltoAltura extends MarcaEnEventoDeCampo {
+public class MarcaEnEventoSaltoLongitud extends MarcaEnEventoDeCampo {
     public static double A;
     public static double B;
     public static double C;
     
-    
-    public MarcaEnEventoSaltoAltura(double marca) {
+    public MarcaEnEventoSaltoLongitud(double marca) {
         super(marca);
     }
 
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("Salto de Longitud:").append("marca = ").append("a").append("centimetros").append(getPuntos());
         return sb.toString();
     }
     
