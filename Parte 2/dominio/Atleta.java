@@ -67,20 +67,37 @@ public class Atleta {
      * @param evento el evento en el que el atleta ha conseguido la marca
      * @param marca la marca conseguida por el atleta
      */
-    //revisar
     public void anyadirMarcaEnEvento(int evento, double marca) throws MarcaNegativaException {
        if (marca < 0) {
            throw new MarcaNegativaException("La marca no puede ser negativa.");
        }
-        MarcaEnEvento nuevaMarca = new MarcaEnEvento(marca) {
-           @Override
-           public void calcularPuntosEvento(double A, double B, double C, double marca) {
-               throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-           }
-       };
-        //nuevaMarca.calcularPuntosEvento(); // 
-        marcas[evento] = nuevaMarca;
-        calcularPuntos(); // recalcula puntos totales
+        MarcaEnEvento nuevaMarca = null;
+        switch (evento) {
+            case MarcaEnEvento.CIEN_METROS:
+                nuevaMarca = new MarcaEnEvento100m(marca);
+                break;
+            case MarcaEnEvento.SALTO_DE_LONGITUD:
+                nuevaMarca = new MarcaEnEventoSaltoLongitud(marca);
+                break;
+            case MarcaEnEvento.LAZAMIENTO_DE_PESO:
+                nuevaMarca = new MarcaEnEventoLanzamientoPeso(marca);
+                break;
+            case MarcaEnEvento.SALTO_DE_ALTURA:
+                nuevaMarca = new MarcaEnEventoSaltoAltura(marca);
+                break;
+            case MarcaEnEvento.CUATROCIENTOS_METROS:
+                nuevaMarca = new MarcaEnEvento400m(marca);
+                break;
+            default:
+                System.out.println("Evento Incorrecto!");
+                break;
+            }
+    
+    double[] parametros = MarcaEnEvento.PARAM[evento];
+    nuevaMarca.calcularPuntosEvento(parametros[0], parametros[1], parametros[2], marca);
+    marcas[evento] = nuevaMarca;
+    calcularPuntos();          
+     
     }
 
 
