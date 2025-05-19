@@ -9,6 +9,9 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  * @author dario
  */
 public class NumInscripcionException extends Exception {
+    public NumInscripcionException() {
+        super("ERROR: El número de inscripción es erróneo.");
+    }
     public NumInscripcionException(String msg) {
         super(msg);
     }
