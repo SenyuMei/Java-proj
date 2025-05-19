@@ -13,13 +13,21 @@ public class MarcaEnEventoLanzamientoPeso extends MarcaEnEventoDeCampo {
     public static double B;
     public static double C;    
 
+    
     public MarcaEnEventoLanzamientoPeso(double marca) {
         super(marca);
-    }
-
+        calcularPuntosEvento(PARAM[LAZAMIENTO_DE_PESO][0], 
+                         PARAM[LAZAMIENTO_DE_PESO][1], 
+                         PARAM[LAZAMIENTO_DE_PESO][2], 
+                         this.marca);
+    }   
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("Lanzamiento de Peso: ");
+        sb.append("marca = ").append(this.marca).append(" segundos,");
+        sb.append("puntos = ").append(this.puntos);
         return sb.toString();
     }
     
