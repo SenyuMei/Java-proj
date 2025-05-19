@@ -8,14 +8,19 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  *
  * @author dario
  */
-public class MarcaEnEventoLanzamientoPeso extends MarcaEnEventoDeCampo {    
+public class MarcaEnEventoLanzamientoPeso extends MarcaEnEventoDeCampo {
+    public static double A;
+    public static double B;
+    public static double C;    
 
     public MarcaEnEventoLanzamientoPeso(double marca) {
         super(marca);
     }
 
     @Override
-    public void calcularPuntosEvento(double A, double B, double C, double marca) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        return sb.toString();
     }
+    
 }
