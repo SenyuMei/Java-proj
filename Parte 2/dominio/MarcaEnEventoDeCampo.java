@@ -10,8 +10,15 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  */
 public abstract class MarcaEnEventoDeCampo extends MarcaEnEvento{
     
+
     public MarcaEnEventoDeCampo(double marca) {
         super(marca);
+
+    }
+    
+    @Override
+    public void calcularPuntosEvento(double A, double B, double C, double marca) {
+       this.puntos = (int) Math.floor(A * Math.pow(marca - B, C));//revisar formula
     }
     
 }
