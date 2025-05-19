@@ -18,8 +18,9 @@ public abstract class MarcaEnEventoDeCampo extends MarcaEnEvento{
     
     @Override
     public void calcularPuntosEvento(double A, double B, double C, double marca) {
-       this.puntos = (int) Math.floor(A * Math.pow(marca - B, C));//revisar formula
+       this.puntos = (int) Math.floor(A * Math.pow(marca - B, C));
     }
     
 }
+
 
