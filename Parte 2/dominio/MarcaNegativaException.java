@@ -9,6 +9,9 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  * @author dario
  */
 public class MarcaNegativaException extends Exception{
+    public MarcaNegativaException() {
+        super("ERROR: La marca es negativa");
+    }
     public MarcaNegativaException(String msg){
         super(msg);
     }
