@@ -130,22 +130,43 @@ public class Atleta {
      * Puntos totales: 3993<br>
      * 
         */
-   @Override
-   public String toString() {
-       StringBuilder sb = new StringBuilder();
-       sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
-       sb.append("Nombre: ").append(this.nombre).append("\n");
-       sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
+    @Override
+    //to String a editar
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
+        sb.append("Nombre: ").append(this.nombre).append("\n");
+        sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
 
-       for (MarcaEnEvento marca : marcas) {
-           if (marca != null) {
-               sb.append(marca.toString()).append("\n");
-           }
-       }
+        String[] nombresEventos = {
+            "100 metros lisos",
+            "Salto de longitud",
+            "Lanzamiento de peso",
+            "Salto de altura",
+            "400 metros lisos"
+        };
 
-       sb.append("\nPuntos totales: ").append(this.puntos).append("\n");
+        String[] unidadesEventos = {
+            "segundos",  // CIEN_METROS
+            "centimetros", // SALTO_DE_LONGITUD
+            "metros",  // LAZAMIENTO_DE_PESO
+            "centimetros", // SALTO_DE_ALTURA
+            "segundos"  // CUATROCIENTOS_METROS
+        };
 
-       return sb.toString();
-   }
+        for (int i = 0; i < marcas.length; i++) {
+            MarcaEnEvento marca = marcas[i];
+            if (marca != null) {
+                sb.append(nombresEventos[i]);
+                sb.append(":      marca=").append(marca.marca); 
+                sb.append(" ").append(unidadesEventos[i]).append(",  ");
+                sb.append("puntos=").append(marca.getPuntos()).append("\n");
+            }
+        }
+
+        sb.append("\nPuntos totales: ").append(this.puntos).append("\n");
+
+        return sb.toString();
+    }
 
 }
