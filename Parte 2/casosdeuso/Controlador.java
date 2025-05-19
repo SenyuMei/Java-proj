@@ -77,12 +77,19 @@ public final class Controlador {
      */
     public Controlador(String nombre, String fecha,
                        String lugar, InterficieUsuario iu, boolean inicializa) throws NoAtletasInscritosException, NumInscripcionException, TipoEventoException, MarcaNegativaException {
+                             
         this.iu = iu;
         this.atletas = new HashMap<>();
         this.competicion = new Competicion(nombre, fecha, lugar);
-
+        
+       
+        
         if (inicializa) {
+            if(atletas.isEmpty()) {
+                throw new NoAtletasInscritosException("ERROR: Aún no hay ningún atleta inscrito.");
+            } else { 
             inicializaConAtletasYMarcasIniciales();
+            }   
         }
     }
 
