@@ -9,14 +9,25 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  * @author dario
  */
 public class MarcaEnEventoSaltoLongitud extends MarcaEnEventoDeCampo {
-
+    public static double A;
+    public static double B;
+    public static double C;
+    
     public MarcaEnEventoSaltoLongitud(double marca) {
         super(marca);
-    }
-
+        calcularPuntosEvento(PARAM[SALTO_DE_LONGITUD][0], 
+                         PARAM[SALTO_DE_LONGITUD][1], 
+                         PARAM[SALTO_DE_LONGITUD][2], 
+                         this.marca);
+    }   
+    
     @Override
-    public void calcularPuntosEvento(double A, double B, double C, double marca) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Salto de Longitud: ");
+        sb.append("marca = ").append(this.marca).append(" segundos,");
+        sb.append("puntos = ").append(this.puntos);
+        return sb.toString();
     }
     
 }
