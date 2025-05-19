@@ -16,11 +16,18 @@ public class MarcaEnEvento100m extends MarcaEnEventoDePista{
 
     public MarcaEnEvento100m(double marca) {
         super(marca);
+        calcularPuntosEvento(PARAM[CIEN_METROS][0], 
+                         PARAM[CIEN_METROS][1], 
+                         PARAM[CIEN_METROS][2], 
+                         this.marca);
     }   
     
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("100 metros lisos: ");
+        sb.append("marca = ").append(this.marca).append(" segundos,");
+        sb.append("puntos = ").append(this.puntos);
         return sb.toString();
     }
 }
