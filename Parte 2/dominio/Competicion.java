@@ -5,6 +5,7 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  */
 public class Competicion {
 
+
     private final String nombre;
     private final String fecha;
     private int numInscritos = 0;
