@@ -25,7 +25,7 @@ public class MarcaEnEventoSaltoLongitud extends MarcaEnEventoDeCampo {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Salto de Longitud: ");
-        sb.append("marca = ").append(this.marca).append(" segundos,");
+        sb.append("marca = ").append(this.marca).append(" centimetros,");
         sb.append("puntos = ").append(this.puntos);
         return sb.toString();
     }
