@@ -26,7 +26,7 @@ public class MarcaEnEventoLanzamientoPeso extends MarcaEnEventoDeCampo {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Lanzamiento de Peso: ");
-        sb.append("marca = ").append(this.marca).append(" segundos,");
+        sb.append("marca = ").append(this.marca).append(" metros,");
         sb.append("puntos = ").append(this.puntos);
         return sb.toString();
     }
