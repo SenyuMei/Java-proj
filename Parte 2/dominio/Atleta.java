@@ -6,7 +6,7 @@ package edu.upc.etsetb.poo.decathlon1.dominio;
  */
 public class Atleta {
 
-    private final int numInscripcion;
+   private final int numInscripcion;
     private final String nombre;
     private final String nacionalidad;
     private int puntos;
@@ -129,44 +129,23 @@ public class Atleta {
      * <br>
      * Puntos totales: 3993<br>
      * 
+     * @return 
         */
     @Override
-    //to String a editar
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Numero de inscripcion: ").append(this.numInscripcion).append("\n");
         sb.append("Nombre: ").append(this.nombre).append("\n");
         sb.append("Nacionalidad: ").append(this.nacionalidad).append("\n");
-
-        String[] nombresEventos = {
-            "100 metros lisos",
-            "Salto de longitud",
-            "Lanzamiento de peso",
-            "Salto de altura",
-            "400 metros lisos"
-        };
-
-        String[] unidadesEventos = {
-            "segundos",  // CIEN_METROS
-            "centimetros", // SALTO_DE_LONGITUD
-            "metros",  // LAZAMIENTO_DE_PESO
-            "centimetros", // SALTO_DE_ALTURA
-            "segundos"  // CUATROCIENTOS_METROS
-        };
-
-        for (int i = 0; i < marcas.length; i++) {
-            MarcaEnEvento marca = marcas[i];
+        
+        int puntosAdd = 0;
+        
+        for (MarcaEnEvento marca : this.marcas) {
             if (marca != null) {
-                sb.append(nombresEventos[i]);
-                sb.append(":      marca=").append(marca.marca); 
-                sb.append(" ").append(unidadesEventos[i]).append(",  ");
-                sb.append("puntos=").append(marca.getPuntos()).append("\n");
+                sb.append(marca.toString()).append("\n");
+                puntosAdd += marca.getPuntos();
             }
         }
-
-        sb.append("\nPuntos totales: ").append(this.puntos).append("\n");
-
+        sb.append("\nPuntos totales: ").append(puntosAdd);
         return sb.toString();
     }
-
-}
