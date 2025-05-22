@@ -149,3 +149,5 @@ public class Atleta {
         sb.append("\nPuntos totales: ").append(puntosAdd);
         return sb.toString();
     }
+
+}
